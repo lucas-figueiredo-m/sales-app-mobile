@@ -12,7 +12,7 @@ import Config from 'react-native-config';
 console.log('Config: ', Config);
 
 export const schema = appSchema({
-  version: parseInt(Config.SCHEMA_VERSION),
+  version: parseInt(Config.SCHEMA_VERSION, 10),
   tables: [
     ClientTable,
     ProductTable,
