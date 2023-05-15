@@ -3,7 +3,6 @@ import isEmpty from 'validator/es/lib/isEmpty';
 import Equals from 'validator/es/lib/equals';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 
-// TODO: removes nested ternaries
 const buildErrorMessage = (
   error: string | undefined,
   isValid: boolean,
@@ -58,7 +57,6 @@ export const validate = (str: string) => {
     },
 
     phone: (customErrorMessage?: string) => {
-      // @ts-ignore It's been ignored because it requires a list os supported locales
       n.isValid = n.isValid && isMobilePhone(n.field, 'pt-BR');
       n.error = buildErrorMessage(
         n.error,

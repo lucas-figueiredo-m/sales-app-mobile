@@ -29,7 +29,6 @@ export const Tab: React.FC<Props> = ({
   routeName,
   routeKey,
 }) => {
-  // TODO: break this nested ternary
   const label =
     options.tabBarLabel !== undefined
       ? options.tabBarLabel

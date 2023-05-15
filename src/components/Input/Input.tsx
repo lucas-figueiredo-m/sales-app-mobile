@@ -70,7 +70,6 @@ export const Input: React.FC<Props> = ({
         />
         <Pressable onPress={() => InputRef.current?.focus()}>
           <Animated.Text style={[styles.placeholder, placeholderStyle]}>
-            {/* // TODO: fix this typo */}
             {required ? t(placeholder) + '*' : t(placeholder)}
           </Animated.Text>
         </Pressable>
