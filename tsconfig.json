@@ -1,3 +1,22 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@salesapp/theme": ["./src/theme/index.ts"],
+      "@salesapp/theme/*": ["./src/theme/*"],
+      "@salesapp/screens": ["./src/screens"],
+      "@salesapp/icons": ["./src/assets/icons/index.ts"],
+      "@salesapp/types": ["./src/types/index.ts"],
+      "@salesapp/hooks": ["./src/hooks/index.ts"],
+      "@salesapp/components": ["./src/components/index.ts"],
+      "@salesapp/services": ["./src/services/index.ts"],
+      "@salesapp/constants": ["./src/constants/index.ts"],
+      "@salesapp/database": ["./src/database/index.ts"],
+      "@salesapp/utils": ["./src/utils/index.ts"],
+      "@salesapp/navigator": ["./src/navigator/index.ts"],
+      "@salesapp/locales": ["./src/locales/index.ts"],
+      "*": ["./src/*"],
+    }
+  }
 }
