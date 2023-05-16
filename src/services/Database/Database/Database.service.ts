@@ -36,19 +36,23 @@ class DatabaseClass {
     const refactoredChanges = keys.reduce<DatabaseChangeSet>((prev, curr) => {
       const item = changes[curr];
 
-      // TODO: fix typo error
-      const created = item.created.map(created => ({
-        ...created,
-        created_at: new Date(created.created_at).getTime(),
-        updated_at: new Date(created.updated_at).getTime(),
+      if (!item) {
+        return { ...prev };
+      }
+
+      const created = item.created.map(createdItem => ({
+        ...createdItem,
+        created_at: new Date(createdItem.created_at).getTime(),
+        updated_at: new Date(createdItem.updated_at).getTime(),
       }));
 
-      const updated = item.updated.map(created => ({
-        ...created,
-        created_at: new Date(created.created_at).getTime(),
-        updated_at: new Date(created.updated_at).getTime(),
+      const updated = item.updated.map(updatedItem => ({
+        ...updatedItem,
+        created_at: new Date(updatedItem.created_at).getTime(),
+        updated_at: new Date(updatedItem.updated_at).getTime(),
       }));
 
+      // TODO: fix this any
       const entry: TableChangeSet<any> = {
         created,
         updated,
@@ -70,7 +74,7 @@ class DatabaseClass {
     migration,
     schemaVersion,
   }: SyncPullArgs): Promise<SyncPullResult> {
-    const params = {
+    const params: SyncPullParams = {
       lastPulledAt,
       schemaVersion,
       migration,

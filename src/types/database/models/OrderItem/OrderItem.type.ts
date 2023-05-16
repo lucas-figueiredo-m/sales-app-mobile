@@ -10,6 +10,9 @@ export type OrderItem = {
   estimated_product_total_price: number;
   product_totalPrice: number;
   notes: string;
+
+  created_at: number;
+  updated_at: number;
 };
 
 export type OrderItemWithoutId = Omit<OrderItem, 'id'>;

@@ -10,5 +10,6 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [0],
     '@typescript-eslint/object-curly-spacing': 'off',
+    'react/no-unstable-nested-components': 'off',
   },
 };

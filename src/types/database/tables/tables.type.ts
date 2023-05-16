@@ -1,5 +1,4 @@
 import { Tables } from './tables.enum';
-import { Migration } from '@nozbe/watermelondb/Schema/migrations';
 import {
   Client,
   HistoricalProductPrice,
@@ -7,6 +6,7 @@ import {
   OrderItem,
   Product,
 } from '../models';
+import { MigrationSyncChanges } from '@nozbe/watermelondb/Schema/migrations/getSyncChanges';
 
 export type Id = string;
 export type Timestamp = number;
@@ -39,8 +39,8 @@ export type SyncPullResult = {
 export type SyncPushResult = SyncPullResult;
 
 export type SyncPullParams = {
-  lastPulledAt: number;
-  migration?: Migration | null;
+  lastPulledAt?: number;
+  migration?: MigrationSyncChanges;
   schemaVersion?: number;
 };
 export type SyncPushParams = {

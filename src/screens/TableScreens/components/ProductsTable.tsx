@@ -1,3 +1,4 @@
+import React from 'react';
 import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
 import { Product } from '@salesapp/types';
 import withObservables, { ObservableifyProps } from '@nozbe/with-observables';
@@ -13,7 +14,7 @@ type InputProps = ObservableifyProps<Props, 'products'>;
 
 const ProductTableToObserve: React.FC<Props> = ({ products }) => {
   const styles = useThemedStyles(themedStyles);
-  // TODO: fix code smell
+
   const ProductListSeparator: React.FC = () => (
     <View style={styles.separator} />
   );

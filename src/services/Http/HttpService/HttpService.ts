@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import Config from 'react-native-config';
 import * as AxiosLogger from 'axios-logger';
 
@@ -65,20 +70,16 @@ class HttpServiceFactory {
   }
 
   private addRequestInterceptor(instance: AxiosInstance) {
-    instance.interceptors.request.use(async request => {
-      // TODO: fix typo
-
-      request.headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      };
+    instance.interceptors.request.use(request => {
+      request.headers.Accept = 'application/json';
+      request.headers['Content-Type'] = 'application/json';
 
       if (this.accessToken)
         request.headers.Authorization = `Bearer ${this.accessToken}`;
 
-      // const { token } = await Keychain.getToken()
-
-      return this.logs_enabled ? AxiosLogger.requestLogger(request) : request;
+      return this.logs_enabled
+        ? (AxiosLogger.requestLogger(request) as InternalAxiosRequestConfig)
+        : request;
     }, AxiosLogger.errorLogger);
   }
 

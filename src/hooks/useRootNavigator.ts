@@ -5,9 +5,12 @@ export const rootNavigationRef =
   createNavigationContainerRef<MainStackParams>();
 
 export const useRootNavigator = () => {
-  const navigate = (screen: MainRoutes) => {
+  const navigate = (
+    screen: MainRoutes,
+    params?: MainStackParams[typeof screen],
+  ) => {
     if (rootNavigationRef.isReady()) {
-      rootNavigationRef.navigate(screen); // TODO: fix this typo
+      rootNavigationRef.navigate({ key: screen, params });
     }
   };
 

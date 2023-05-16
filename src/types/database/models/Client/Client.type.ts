@@ -14,6 +14,9 @@ export type Client = {
   complement: string;
   zip_code: string;
   active: boolean;
+
+  created_at: number;
+  updated_at: number;
 };
 
 export type ClientWithoutId = Omit<Client, 'id'>;

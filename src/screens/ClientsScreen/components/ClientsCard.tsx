@@ -56,8 +56,9 @@ const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
 
 export const ClientCardToObserve: React.FC<Props> = ({ clients }) => {
   const styles = useThemedStyles(themedClientList);
-  // TODO: fix react bad smell below
+
   const ClientListSeparator: React.FC = () => <View style={styles.separator} />;
+
   return (
     <View style={styles.root}>
       <FlashList

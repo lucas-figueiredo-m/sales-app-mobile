@@ -38,7 +38,6 @@ export const TabNavigator: React.FC = () => {
   const rootNavigator = useRootNavigator();
   const { Font } = useTheme();
 
-  // TODO: fix bad react smells below
   return (
     <Tab.Navigator
       screenOptions={{

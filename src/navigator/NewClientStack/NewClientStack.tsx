@@ -40,12 +40,7 @@ const HeaderRight: React.FC<
 > = props => {
   return (
     <TouchableOpacity onPress={props.onPress}>
-      <SVG
-        xml={X as unknown as string}
-        color={props.tintColor}
-        width={26}
-        height={26}
-      />
+      <SVG xml={X} color={props.tintColor} width={26} height={26} />
     </TouchableOpacity>
   );
 };
@@ -62,7 +57,7 @@ const NewClientStack: React.FC = () => {
         title: 'NOVO CADASTRO',
         headerTitleStyle: styles.title,
         headerTintColor: colors.Header.Tint,
-        headerLeft: props => <HeaderLeft {...props} />,
+        headerLeft: HeaderLeft,
         cardStyle: {
           flex: 1,
           backgroundColor: Colors.White,
@@ -90,7 +85,7 @@ const NewClientStack: React.FC = () => {
   );
 };
 
-const themedStyles = createThemedStyles(({ fonts, colors }) => ({
+const themedStyles = createThemedStyles(({ fonts }) => ({
   title: {
     fontFamily: fonts.family.Montserrat,
   },
