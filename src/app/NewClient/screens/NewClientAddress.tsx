@@ -1,24 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Colors } from '@salesapp/theme';
 import { Container, Button, Form, Label } from '@salesapp/components';
-import { ClientNavigationProp, ClientRoutes } from '@salesapp/types';
-
-const styles = StyleSheet.create({
-  root: {
-    width: '100%',
-    backgroundColor: Colors.White,
-    // maxHeight: '100%',
-    height: '100%',
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    padding: 15,
-  },
-  height: { height: 100 },
-  width: { width: '40%' },
-});
+import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
+import { NewClientNavigationProp, NewClientRoutes } from '../types';
 
 // TODO: use KeyboardAvoidingView
 
@@ -29,9 +16,11 @@ const formData = {
   zipCode: '',
 };
 
-export const RegisterMerchantAddressScreen: React.FC = () => {
-  const { navigate } =
-    useNavigation<ClientNavigationProp<ClientRoutes.MerchantAddress>>();
+type NavigationType = NewClientNavigationProp<NewClientRoutes.MerchantData>;
+
+export const NewClientAddress: React.FC = () => {
+  const styles = useThemedStyles(themedStyles);
+  const { navigate } = useNavigation<NavigationType>();
 
   const onSubmit = () => {
     // await ClientService.create({
@@ -102,7 +91,7 @@ export const RegisterMerchantAddressScreen: React.FC = () => {
                 backgroundColor={Colors.Flame}
                 t="common.continue"
                 labelColor={Colors.White}
-                onPress={() => navigate(ClientRoutes.MerchantBuyer)}
+                onPress={() => navigate(NewClientRoutes.MerchantBuyer)}
               />
             </View>
           )}
@@ -111,3 +100,16 @@ export const RegisterMerchantAddressScreen: React.FC = () => {
     </Container>
   );
 };
+const themedStyles = createThemedStyles(({ colors }) => ({
+  root: {
+    width: '100%',
+    backgroundColor: colors.CommonColors.White,
+    // maxHeight: '100%',
+    height: '100%',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    padding: 15,
+  },
+  height: { height: 100 },
+  width: { width: '40%' },
+}));

@@ -1,6 +1,7 @@
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TabParams } from './TabTypes';
+import { NewClientParams } from '@saleapp/journeys';
 
 export enum MainRoutes {
   Tabs = 'Tabs',
@@ -17,7 +18,7 @@ export enum MainRoutes {
 
 export type MainStackParams = {
   [MainRoutes.Tabs]: NavigatorScreenParams<TabParams>;
-  [MainRoutes.AddClient]: undefined;
+  [MainRoutes.AddClient]: NavigatorScreenParams<NewClientParams>;
   [MainRoutes.AddOrder]: undefined;
   [MainRoutes.Login]: undefined;
   [MainRoutes.Splash]: undefined;

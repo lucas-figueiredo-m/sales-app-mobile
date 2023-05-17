@@ -12,20 +12,23 @@ interface ReqParams<P> extends AxiosRequestConfig {
 }
 type DefaultParams = Record<string, never>;
 
-class HttpServiceFactory {
+export class HttpServiceFactory {
   protected accessToken: string;
   public id: number;
   private readonly logs_enabled: boolean;
 
-  constructor() {
+  public api: AxiosInstance;
+
+  constructor(baseUrl: string) {
     this.logs_enabled = Config.ENABLE_API_LOGS;
     this.accessToken = '';
     this.id = 0;
+    this.api = this.restServiceInstance(baseUrl);
   }
 
-  get api(): AxiosInstance {
-    return this.restServiceInstance();
-  }
+  // get api(): AxiosInstance {
+  //   return this.restServiceInstance();
+  // }
 
   get access_token(): string {
     return this.accessToken;
@@ -36,8 +39,8 @@ class HttpServiceFactory {
     this.id = id;
   }
 
-  private restServiceInstance() {
-    const instance = axios.create({ baseURL: Config.API_URL });
+  private restServiceInstance(baseURL: string) {
+    const instance = axios.create({ baseURL });
     this.addRequestInterceptor(instance);
     this.addResponseInterceptor(instance);
 
@@ -92,4 +95,4 @@ class HttpServiceFactory {
   }
 }
 
-export const HttpService = new HttpServiceFactory();
+export const HttpService = new HttpServiceFactory(Config.API_URL);

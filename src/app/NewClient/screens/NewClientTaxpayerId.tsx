@@ -1,24 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Colors } from '@salesapp/theme';
 import { Container, Button, Form, Label } from '@salesapp/components';
-import { ClientNavigationProp, ClientRoutes } from '@salesapp/types';
-
-const styles = StyleSheet.create({
-  root: {
-    width: '100%',
-    backgroundColor: Colors.White,
-    // maxHeight: '100%',
-    height: '100%',
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    padding: 15,
-  },
-  height: { height: 100 },
-  width: { width: '40%' },
-});
+import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
+import { NewClientNavigationProp, NewClientRoutes } from '../types';
 
 // TODO: use KeyboardAvoidingView
 
@@ -28,9 +15,11 @@ const formData = {
   tradeName: '',
 };
 
-export const RegisterMerchantDataScreen: React.FC = () => {
-  const { navigate } =
-    useNavigation<ClientNavigationProp<ClientRoutes.MerchantData>>();
+type NavigationType = NewClientNavigationProp<NewClientRoutes.MerchantData>;
+
+export const NewClientTaxpayerId: React.FC = () => {
+  const styles = useThemedStyles(themedStyles);
+  const { navigate } = useNavigation<NavigationType>();
 
   const onSubmit = () => {
     // await ClientService.create({
@@ -63,25 +52,11 @@ export const RegisterMerchantDataScreen: React.FC = () => {
                 name="taxpayerId"
                 placeholder="CNPJ"
               />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe a Razão Social' }}
-                error={errors?.companyName?.message}
-                name="companyName"
-                placeholder="Razão Social"
-              />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe o Nome Fantasia' }}
-                error={errors?.tradeName?.message}
-                name="tradeName"
-                placeholder="Nome Fantasia"
-              />
               <Button.Large
                 backgroundColor={Colors.Flame}
                 t="common.continue"
                 labelColor={Colors.White}
-                onPress={() => navigate(ClientRoutes.MerchantAddress)}
+                onPress={() => navigate(NewClientRoutes.MerchantData)}
               />
             </View>
           )}
@@ -90,3 +65,17 @@ export const RegisterMerchantDataScreen: React.FC = () => {
     </Container>
   );
 };
+
+const themedStyles = createThemedStyles(({ colors }) => ({
+  root: {
+    width: '100%',
+    backgroundColor: colors.CommonColors.White,
+    // maxHeight: '100%',
+    height: '100%',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    padding: 15,
+  },
+  height: { height: 100 },
+  width: { width: '40%' },
+}));

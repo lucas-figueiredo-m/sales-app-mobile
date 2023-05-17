@@ -13,9 +13,9 @@ import {
   SwineTableScreen,
 } from '@salesapp/screens';
 import { modalOptions } from './config';
-import NewClientStack from './NewClientStack/NewClientStack';
 import { MainRoutes, MainStackParams } from '@salesapp/types';
 import { TabNavigator } from './TabNavigator/TabNavigator';
+import { NewClientNavigator } from '@saleapp/journeys';
 
 const Stack = createStackNavigator<MainStackParams>();
 
@@ -30,7 +30,7 @@ export const Router: React.FC = () => {
         {/** // TODO: add a navigator instead of a group to handle in-modal navigation */}
         <Stack.Screen
           name={MainRoutes.AddClient}
-          component={NewClientStack}
+          component={NewClientNavigator}
           options={modalOptions}
         />
 

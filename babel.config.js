@@ -30,7 +30,7 @@ module.exports = {
           '@salesapp/utils': ['./src/utils'],
           '@salesapp/navigator': ['./src/navigator'],
           '@salesapp/locales': ['./src/locales'],
-          '*': ['./src/*'],
+          '@saleapp/journeys': ['./src/app'],
         },
       },
     ],
