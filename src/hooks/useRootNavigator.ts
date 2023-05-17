@@ -10,7 +10,7 @@ export const useRootNavigator = () => {
     params?: MainStackParams[typeof screen],
   ) => {
     if (rootNavigationRef.isReady()) {
-      rootNavigationRef.navigate({ key: screen, params });
+      rootNavigationRef.navigate(screen);
     }
   };
 

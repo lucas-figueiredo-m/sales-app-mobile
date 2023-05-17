@@ -12,10 +12,11 @@ import { TabParams, TabRoutes } from './TabTypes';
 
 import { TabBar } from './components/TabBar';
 import { Colors } from '@salesapp/theme';
-import { useTranslation, useRootNavigator, useTheme } from '@salesapp/hooks';
+import { useTranslation, useTheme } from '@salesapp/hooks';
 import { Pressable, StyleSheet } from 'react-native';
 import { defaultHitSlop } from '@salesapp/constants';
-import { MainRoutes } from '@salesapp/types';
+import { MainRoutes, MainStackNavigation } from '@salesapp/types';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   rightButtonContainer: {
@@ -30,12 +31,14 @@ const styles = StyleSheet.create({
 
 const Tab = createBottomTabNavigator<TabParams>();
 
+type TabNavigationType = MainStackNavigation<MainRoutes.Tabs>;
+
 // https://www.youtube.com/watch?v=bNuwwkgRQOk
 // https://reactnavigation.org/docs/bottom-tab-navigator#tabbar
 
 export const TabNavigator: React.FC = () => {
   const t = useTranslation();
-  const rootNavigator = useRootNavigator();
+  const { navigate } = useNavigation<TabNavigationType>();
   const { Font } = useTheme();
 
   return (
@@ -61,7 +64,7 @@ export const TabNavigator: React.FC = () => {
           headerShown: true,
           headerRight: () => (
             <Pressable
-              onPress={() => rootNavigator.navigate(MainRoutes.AddClient)}
+              onPress={() => navigate(MainRoutes.AddClient)}
               hitSlop={defaultHitSlop}
               style={styles.rightButtonContainer}>
               <Label.H4
