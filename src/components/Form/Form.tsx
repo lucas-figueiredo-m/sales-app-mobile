@@ -35,6 +35,8 @@ type FieldProps<TFieldValues extends FieldValues> = {
   error?: string;
   rules?: UseControllerProps<TFieldValues>['rules'];
   placeholder: Translation;
+  formatter?: (input: string) => string;
+  maxLength?: number;
 };
 
 const Form = <TFieldValues extends FieldValues>({
@@ -58,6 +60,8 @@ export const Field = <TFieldValues extends FieldValues>({
   error,
   rules,
   placeholder,
+  maxLength,
+  formatter,
 }: FieldProps<TFieldValues>) => {
   return (
     <Controller
@@ -65,10 +69,11 @@ export const Field = <TFieldValues extends FieldValues>({
       rules={rules}
       render={({ field: { onBlur, onChange, value } }) => (
         <Input
-          placeholder={placeholder as string}
-          state={{ value, error }}
+          placeholder={placeholder}
+          state={{ value: formatter ? formatter(value) : value, error }}
           onChangeText={onChange}
           onBlur={onBlur}
+          maxLength={maxLength}
         />
       )}
       name={name}

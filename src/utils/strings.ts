@@ -1,15 +1,64 @@
+import { createRegExp, digit, not, global, exactly } from 'magic-regexp';
+
 export const toCapitalize = (str: string): string => {
   if (str.length === 0) return str;
 
   return `${str[0].toUpperCase()}${str.substring(1)}`;
 };
 
-export const formatTaxpayerId = (taxpayerId: string): string => {
-  const part1 = taxpayerId.slice(0, 2);
-  const part2 = taxpayerId.slice(2, 5);
-  const part3 = taxpayerId.slice(5, 8);
-  const part4 = taxpayerId.slice(8, 12);
-  const part5 = taxpayerId.slice(12);
+const removeNonDigit = not.digit;
 
-  return `${part1}.${part2}.${part3}/${part4}-${part5}`;
+const restOfNumeric = digit.grouped();
+
+const taxpayerIdSection1 = digit.times(2).grouped();
+const taxpayerIdSection2 = digit.times(3).grouped();
+const taxpayerIdSection3 = digit.times(3).grouped();
+const taxpayerIdSection4 = digit.times(4).grouped();
+const taxpayerIdSection5 = digit.times(2).grouped();
+
+const taxpayerIdCleanup = createRegExp(removeNonDigit, [global]);
+const taxpayerIdPart1 = createRegExp(taxpayerIdSection1, restOfNumeric);
+const taxpayerIdPart2 = createRegExp(
+  exactly(taxpayerIdSection1, '.', taxpayerIdSection2),
+  restOfNumeric,
+);
+const taxpayerIdPart3 = createRegExp(
+  exactly(taxpayerIdSection1, '.', taxpayerIdSection2, '.', taxpayerIdSection3),
+  restOfNumeric,
+);
+const taxpayerIdPart4 = createRegExp(
+  exactly(
+    taxpayerIdSection1,
+    '.',
+    taxpayerIdSection2,
+    '.',
+    taxpayerIdSection3,
+    '/',
+    taxpayerIdSection4,
+  ),
+
+  restOfNumeric,
+);
+const taxpayerIdPart5 = createRegExp(
+  exactly(
+    taxpayerIdSection1,
+    '.',
+    taxpayerIdSection2,
+    '.',
+    taxpayerIdSection3,
+    '/',
+    taxpayerIdSection4,
+    '-',
+    taxpayerIdSection5,
+  ),
+);
+
+export const formatTaxpayerId = (taxpayerId: string): string => {
+  return taxpayerId
+    .replace(taxpayerIdCleanup, '')
+    .replace(taxpayerIdPart1, '$1.$2')
+    .replace(taxpayerIdPart2, '$1.$2.$3')
+    .replace(taxpayerIdPart3, '$1.$2.$3/$4')
+    .replace(taxpayerIdPart4, '$1.$2.$3/$4-$5')
+    .replace(taxpayerIdPart5, '$1.$2.$3/$4-$5');
 };

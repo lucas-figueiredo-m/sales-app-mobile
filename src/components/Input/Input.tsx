@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
 import { Translation } from '@salesapp/types';
-import { useAnimatedInput, InputStatus } from './hooks/useAnimatedInput';
+import { useAnimatedInput, InputStatus } from './hooks';
 import { FieldError } from 'react-hook-form';
 
 interface InputState {
@@ -25,7 +25,7 @@ interface InputState {
   error?: string | FieldError;
 }
 
-type Props = TextInputProps & {
+type Props = Omit<TextInputProps, 'placeholder'> & {
   state: InputState;
   placeholder: Translation;
   required?: boolean;
