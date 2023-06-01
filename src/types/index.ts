@@ -5,3 +5,4 @@ export * from './routes';
 export * from './orders';
 export * from './employees';
 export * from './external-services';
+export * from './clients';

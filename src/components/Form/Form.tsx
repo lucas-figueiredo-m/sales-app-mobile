@@ -1,5 +1,6 @@
 import { Translation } from '@salesapp/types';
 import React from 'react';
+import { Picker as NativePicker } from '@react-native-picker/picker';
 import {
   Controller,
   useForm,
@@ -13,6 +14,7 @@ import {
   UseControllerProps,
 } from 'react-hook-form';
 import { Input } from '../Input/Input';
+import { useTranslation } from '@salesapp/hooks';
 
 type ChildrenParams<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
@@ -39,6 +41,19 @@ type FieldProps<TFieldValues extends FieldValues> = {
   maxLength?: number;
 };
 
+type PickerOption = {
+  label: Translation;
+  value: string;
+};
+
+type PickerProps<TFieldValues extends FieldValues> = {
+  control?: Control<TFieldValues>;
+  name: Path<TFieldValues>;
+  error?: string;
+  rules?: UseControllerProps<TFieldValues>['rules'];
+  options: PickerOption[];
+};
+
 const Form = <TFieldValues extends FieldValues>({
   formData,
   children,
@@ -52,6 +67,32 @@ const Form = <TFieldValues extends FieldValues>({
   });
 
   return <>{children({ control, errors, handleSubmit })}</>;
+};
+
+export const Picker = <TFieldValues extends FieldValues>({
+  control,
+  name,
+  options,
+}: PickerProps<TFieldValues>) => {
+  const t = useTranslation();
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { onChange, value } }) => (
+        <NativePicker onValueChange={onChange} selectedValue={value}>
+          <NativePicker.Item label={t('common.pickAChoice')} value="" />
+          {options.map((option, index) => (
+            <NativePicker.Item
+              key={index}
+              label={t(option.label)}
+              value={option.value}
+            />
+          ))}
+        </NativePicker>
+      )}
+    />
+  );
 };
 
 export const Field = <TFieldValues extends FieldValues>({
@@ -82,5 +123,6 @@ export const Field = <TFieldValues extends FieldValues>({
 };
 
 Form.Field = Field;
+Form.Picker = Picker;
 
 export default Form;

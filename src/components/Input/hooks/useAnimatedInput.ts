@@ -7,7 +7,10 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import '@salesapp/extensions';
+
 import { useColorScheme } from '@salesapp/hooks';
+import { useEffect } from 'react';
 
 export enum InputStatus {
   Blur,
@@ -15,8 +18,16 @@ export enum InputStatus {
   Error,
 }
 
-export function useAnimatedInput() {
-  const placeholderStatus = useSharedValue<InputStatus>(InputStatus.Blur);
+export function useAnimatedInput(initialInputValue: string) {
+  const placeholderStatus = useSharedValue<InputStatus>(
+    initialInputValue.isEmptyString() ? InputStatus.Blur : InputStatus.Focus,
+  );
+
+  useEffect(() => {
+    if (!initialInputValue.isEmptyString()) {
+      placeholderStatus.value = InputStatus.Focus;
+    }
+  }, [initialInputValue, placeholderStatus]);
 
   const Colors = useColorScheme();
 
@@ -60,7 +71,7 @@ export function useAnimatedInput() {
     );
 
     return {
-      color: String(fontColor),
+      color: fontColor,
       bottom,
       left,
       fontSize,

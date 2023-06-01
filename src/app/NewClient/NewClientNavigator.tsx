@@ -8,6 +8,7 @@ import {
   NewClientData,
   NewClientTaxpayerId,
 } from './screens';
+import { NewClientContextContainer } from './context';
 
 const Stack = createStackNavigator<NewClientParams>();
 
@@ -15,24 +16,26 @@ export const NewClientNavigator: React.FC = () => {
   const { navigatorScreenOptions, merchantTaxpayeridScreenOptions } =
     useNewClientNavigator();
   return (
-    <Stack.Navigator screenOptions={navigatorScreenOptions}>
-      <Stack.Screen
-        options={merchantTaxpayeridScreenOptions}
-        name={NewClientRoutes.MerchantTaxId}
-        component={NewClientTaxpayerId}
-      />
-      <Stack.Screen
-        name={NewClientRoutes.MerchantData}
-        component={NewClientData}
-      />
-      <Stack.Screen
-        name={NewClientRoutes.MerchantAddress}
-        component={NewClientAddress}
-      />
-      <Stack.Screen
-        name={NewClientRoutes.MerchantBuyer}
-        component={NewClientBuyer}
-      />
-    </Stack.Navigator>
+    <NewClientContextContainer>
+      <Stack.Navigator screenOptions={navigatorScreenOptions}>
+        <Stack.Screen
+          options={merchantTaxpayeridScreenOptions}
+          name={NewClientRoutes.MerchantTaxId}
+          component={NewClientTaxpayerId}
+        />
+        <Stack.Screen
+          name={NewClientRoutes.MerchantData}
+          component={NewClientData}
+        />
+        <Stack.Screen
+          name={NewClientRoutes.MerchantAddress}
+          component={NewClientAddress}
+        />
+        <Stack.Screen
+          name={NewClientRoutes.MerchantBuyer}
+          component={NewClientBuyer}
+        />
+      </Stack.Navigator>
+    </NewClientContextContainer>
   );
 };

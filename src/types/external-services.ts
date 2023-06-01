@@ -86,7 +86,7 @@ export type ConsultTaxpayerIdData = {
     cnpj_ordem: string;
     cnpj_digito_verificador: string;
     tipo: 'Matriz' | 'Filial';
-    nome_fantasia: string;
+    nome_fantasia?: string;
     situacao_cadastral: RegistryStatus;
     data_situacao_cadastral: string;
     data_inicio_atividade: string;
@@ -109,19 +109,28 @@ export type ConsultTaxpayerIdData = {
     atualizado_em: string | null;
     atividade_principal: CompanyActivity;
     pais: InfoCountry;
-    estado: {
-      id: 11;
-      nome: 'Minas Gerais';
-      sigla: 'MG';
-      ibge_id: 31;
-    };
+    estado: StateType;
     cidade: {
-      id: 2663;
-      nome: 'Juiz de Fora';
-      ibge_id: 3136702;
-      siafi_id: '4733';
+      id: number;
+      nome: string;
+      ibge_id: number;
+      siafi_id: string;
     };
     motivo_situacao_cadastral: null;
-    inscricoes_estaduais: [];
+    inscricoes_estaduais: StateRegistrationType[];
   };
+};
+
+export type StateType = {
+  id: number;
+  nome: string;
+  sigla: string;
+  ibge_id: number;
+};
+
+export type StateRegistrationType = {
+  inscricao_estadual: string;
+  ativo: boolean;
+  atualizado_em: string;
+  estado: StateType;
 };

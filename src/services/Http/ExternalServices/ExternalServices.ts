@@ -1,4 +1,4 @@
-import { ConsultTaxpayerIdData } from 'types/external-services';
+import { ConsultTaxpayerIdData } from '@salesapp/types';
 import { HttpServiceFactory } from '../HttpService';
 
 const TaxpayerIdFinder = new HttpServiceFactory('https://publica.cnpj.ws');

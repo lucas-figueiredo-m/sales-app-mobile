@@ -6,14 +6,10 @@ import { Colors } from '@salesapp/theme';
 import { Container, Button, Form, Label } from '@salesapp/components';
 import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
 import { NewClientNavigationProp, NewClientRoutes } from '../types';
-
+import { PaymentMethodOptions, formatPhoneNumber } from '@salesapp/utils';
+import { useNewClientContext } from '../context';
+import { MainRoutes, TabRoutes } from '@salesapp/types';
 // TODO: use KeyboardAvoidingView
-
-const formData = {
-  buyerFirstName: '',
-  buyerLastName: '',
-  phone: '',
-};
 
 type NavigationType = NewClientNavigationProp<NewClientRoutes.MerchantData>;
 
@@ -21,60 +17,53 @@ export const NewClientBuyer: React.FC = () => {
   const styles = useThemedStyles(themedStyles);
   const { navigate } = useNavigation<NavigationType>();
 
-  const onSubmit = () => {
-    // await ClientService.create({
-    //   companyName: `Arthur ${count}`,
-    //   taxpayerId: '104.979.466-45',
-    //   employeeId: 1,
-    //   tradeName: `Lucas ${count}`,
-    //   type: 'Test',
-    //   buyerFirstName: 'Lucas',
-    //   buyerLastName: 'Figueiredo',
-    //   phone: '32991376622',
-    //   address: 'Rua teste',
-    //   number: '123',
-    //   complement: 'Apt 303',
-    //   zipCode: '36045120',
-    //   active: true,
-    // });
+  const { control, errors, registerNewClient } = useNewClientContext();
+
+  const onPressCallback = () => {
+    console.log('Testing 4');
+    navigate(MainRoutes.Tabs, { screen: TabRoutes.Clients });
   };
+
   return (
     <Container>
       <View style={styles.root}>
-        <Form formData={formData}>
-          {({ control, errors, handleSubmit }) => (
-            <View>
-              <Label.H3 t="Dados do comprador" />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe o Telefone' }}
-                error={errors?.phone?.message}
-                name="phone"
-                placeholder="Telefone"
-              />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe um nome' }}
-                error={errors?.buyerFirstName?.message}
-                name="buyerFirstName"
-                placeholder="Nome"
-              />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe um sobrenome' }}
-                error={errors?.buyerLastName?.message}
-                name="buyerLastName"
-                placeholder="Sobrenome"
-              />
-              <Button.Large
-                backgroundColor={Colors.Flame}
-                t="common.continue"
-                labelColor={Colors.White}
-                onPress={() => null}
-              />
-            </View>
-          )}
-        </Form>
+        <View>
+          <Label.H3 t="Dados do comprador" />
+          <Form.Field
+            control={control}
+            rules={{ required: 'Informe o Telefone' }}
+            error={errors?.phone?.message}
+            name="phone"
+            maxLength={15}
+            placeholder="Telefone"
+            formatter={formatPhoneNumber}
+          />
+          <Form.Field
+            control={control}
+            rules={{ required: 'Informe um nome' }}
+            error={errors?.buyerFirstName?.message}
+            name="buyerFirstName"
+            placeholder="Nome"
+          />
+          <Form.Field
+            control={control}
+            rules={{ required: 'Informe um sobrenome' }}
+            error={errors?.buyerLastName?.message}
+            name="buyerLastName"
+            placeholder="Sobrenome"
+          />
+          <Form.Picker
+            control={control}
+            name="defaultPaymentMethod"
+            options={PaymentMethodOptions}
+          />
+          <Button.Large
+            backgroundColor={Colors.Flame}
+            t="common.continue"
+            labelColor={Colors.White}
+            onPress={() => registerNewClient(onPressCallback)}
+          />
+        </View>
       </View>
     </Container>
   );

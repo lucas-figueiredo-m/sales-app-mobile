@@ -31,6 +31,7 @@ module.exports = {
           '@salesapp/navigator': ['./src/navigator'],
           '@salesapp/locales': ['./src/locales'],
           '@saleapp/journeys': ['./src/app'],
+          '@salesapp/extensions': ['./src/extensions'],
         },
       },
     ],

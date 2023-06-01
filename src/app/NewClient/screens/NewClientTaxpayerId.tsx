@@ -1,18 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
+import '@salesapp/extensions';
+
 import { View } from 'react-native';
 import { Colors } from '@salesapp/theme';
 import { Container, Button, Form, Label } from '@salesapp/components';
 import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
 import { NewClientNavigationProp, NewClientRoutes } from '../types';
 import { formatTaxpayerId } from '@salesapp/utils';
+import { useNewClientContext } from '../context';
 
 // TODO: use KeyboardAvoidingView
-
-const formData = {
-  taxpayerId: '',
-};
 
 type NavigationType = NewClientNavigationProp<NewClientRoutes.MerchantData>;
 
@@ -20,31 +19,35 @@ export const NewClientTaxpayerId: React.FC = () => {
   const styles = useThemedStyles(themedStyles);
   const { navigate } = useNavigation<NavigationType>();
 
+  const { onSearchTaxpayerIdInfo, loading, control, errors } =
+    useNewClientContext();
+
+  const onPress = async () => {
+    try {
+      await onSearchTaxpayerIdInfo();
+      navigate(NewClientRoutes.MerchantData);
+    } catch {}
+  };
+
   return (
     <Container>
       <View style={styles.root}>
-        <Form formData={formData}>
-          {({ control, errors, handleSubmit }) => (
-            <View>
-              <Label.H3 t="Dados do estabelecimento" />
-              <Form.Field
-                control={control}
-                rules={{ required: 'Informe o CNPJ', maxLength: 14 }}
-                error={errors?.taxpayerId?.message}
-                name="taxpayerId"
-                placeholder="CNPJ"
-                formatter={formatTaxpayerId}
-                maxLength={18}
-              />
-              <Button.Large
-                backgroundColor={Colors.Flame}
-                t="common.continue"
-                labelColor={Colors.White}
-                onPress={() => navigate(NewClientRoutes.MerchantData)}
-              />
-            </View>
-          )}
-        </Form>
+        <Label.H3 t="Dados do estabelecimento" />
+        <Form.Field
+          control={control}
+          error={errors?.taxpayerId?.message}
+          name="taxpayerId"
+          placeholder="CNPJ"
+          formatter={formatTaxpayerId}
+          maxLength={18}
+        />
+        <Button.Large
+          backgroundColor={Colors.Flame}
+          t="common.continue"
+          labelColor={Colors.White}
+          onPress={onPress}
+          loading={loading}
+        />
       </View>
     </Container>
   );

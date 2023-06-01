@@ -25,6 +25,8 @@ class ClientClass implements ClientAbstract {
         complement: entry.complement,
         zip_code: entry.zip_code,
         active: entry.active,
+        created_at: entry.created_at,
+        updated_at: entry.updated_at,
       }));
     }
     return [];
@@ -48,6 +50,8 @@ class ClientClass implements ClientAbstract {
       complement: entry.complement,
       zip_code: entry.zip_code,
       active: entry.active,
+      created_at: entry.created_at,
+      updated_at: entry.updated_at,
     };
     return formattedEntry;
   }
@@ -86,6 +90,8 @@ class ClientClass implements ClientAbstract {
         complement: newUser.complement,
         zip_code: newUser.zip_code,
         active: newUser.active,
+        created_at: newUser.created_at,
+        updated_at: newUser.updated_at,
       };
       return formattedEntry;
     });
@@ -127,6 +133,8 @@ class ClientClass implements ClientAbstract {
       complement: entry.complement,
       zip_code: entry.zip_code,
       active: entry.active,
+      created_at: entry.created_at,
+      updated_at: entry.updated_at,
     };
     return formattedEntry;
   }

@@ -19,4 +19,4 @@ export type Client = {
   updated_at: number;
 };
 
-export type ClientWithoutId = Omit<Client, 'id'>;
+export type ClientWithoutId = Omit<Client, 'id' | 'created_at' | 'updated_at'>;

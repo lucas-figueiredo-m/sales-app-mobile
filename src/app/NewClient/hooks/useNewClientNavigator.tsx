@@ -1,5 +1,9 @@
 import React from 'react';
-import { StackNavigationScreenOptions } from '@salesapp/types';
+import {
+  MainRoutes,
+  MainStackNavigation,
+  StackNavigationScreenOptions,
+} from '@salesapp/types';
 import {
   NewClientNavigationProp,
   NewClientParams,
@@ -12,9 +16,12 @@ import {
 } from '@salesapp/hooks';
 import { HeaderLeft, HeaderRight } from '../components';
 
+type NewClientNavigatorNavigationType =
+  MainStackNavigation<MainRoutes.AddClient>;
+
 type NewClientNavigatorType = StackNavigationScreenOptions<
   NewClientParams,
-  any
+  NewClientNavigatorNavigationType
 >;
 
 type MerchantTaxpayerIdNavigationType =

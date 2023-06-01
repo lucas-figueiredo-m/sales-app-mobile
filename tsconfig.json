@@ -17,7 +17,8 @@
       "@salesapp/utils": ["./src/utils/index.ts"],
       "@salesapp/navigator": ["./src/navigator/index.ts"],
       "@salesapp/locales": ["./src/locales/index.ts"],
-      "@saleapp/journeys": ["./src/app/index.ts"]
+      "@saleapp/journeys": ["./src/app/index.ts"],
+      "@salesapp/extensions": ["./src/extensions/index.ts"],
     }
   }
 }

@@ -14,11 +14,14 @@ import {
   Pressable,
   ViewStyle,
   Text,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
 } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
 import { Translation } from '@salesapp/types';
 import { useAnimatedInput, InputStatus } from './hooks';
 import { FieldError } from 'react-hook-form';
+import { Label } from '../Label/Label';
 
 interface InputState {
   value: string;
@@ -42,31 +45,43 @@ export const Input: React.FC<Props> = ({
   ...props
 }) => {
   const { containerStyle, placeholderStyle, placeholderStatus } =
-    useAnimatedInput();
+    useAnimatedInput(state.value);
   const t = useTranslation();
 
   const styles = useThemedStyles(themedStyles);
 
   const InputRef = useRef<TextInput>(null);
 
+  const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    if (props.onFocus) {
+      props.onFocus(e);
+    }
+
+    placeholderStatus.value = withTiming(InputStatus.Focus, {
+      duration: 200,
+    });
+  };
+
+  const onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    if (props.onBlur) {
+      props.onBlur(e);
+    }
+
+    placeholderStatus.value = withTiming(InputStatus.Blur, {
+      duration: 200,
+    });
+  };
+
   return (
     <View style={[styles.root, customContainerStyle]}>
       <Animated.View style={[styles.content, containerStyle]}>
         <TextInput
+          {...props}
           style={[styles.input, customInputStyle]}
           ref={InputRef}
-          onFocus={() =>
-            (placeholderStatus.value = withTiming(InputStatus.Focus, {
-              duration: 200,
-            }))
-          }
-          onBlur={() =>
-            (placeholderStatus.value = withTiming(InputStatus.Blur, {
-              duration: 200,
-            }))
-          }
+          onFocus={onFocus}
+          onBlur={onBlur}
           value={state.value}
-          {...props}
         />
         <Pressable onPress={() => InputRef.current?.focus()}>
           <Animated.Text style={[styles.placeholder, placeholderStyle]}>
@@ -74,7 +89,7 @@ export const Input: React.FC<Props> = ({
           </Animated.Text>
         </Pressable>
       </Animated.View>
-      {state.error && <Text>{state.error.toString()}</Text>}
+      {state.error && <Label.H4 t={state.error.toString()} />}
     </View>
   );
 };
