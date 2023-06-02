@@ -7,7 +7,7 @@ import { Container, Button, Form, Label } from '@salesapp/components';
 import { createThemedStyles, useThemedStyles } from '@salesapp/hooks';
 import { NewClientNavigationProp, NewClientRoutes } from '../types';
 import { useNewClientContext } from '../context';
-import { ClientTypeOptions } from '@salesapp/utils';
+import { ClientTypeOptions, formatStateRegistry } from '@salesapp/utils';
 
 // TODO: use KeyboardAvoidingView
 
@@ -77,6 +77,7 @@ export const NewClientData: React.FC = () => {
             error={errors?.stateRegistry?.message}
             name="stateRegistry"
             placeholder="Inscricão Estadual"
+            formatter={formatStateRegistry}
           />
           <Form.Picker
             control={control}

@@ -26,7 +26,9 @@ export const NewClientTaxpayerId: React.FC = () => {
     try {
       await onSearchTaxpayerIdInfo();
       navigate(NewClientRoutes.MerchantData);
-    } catch {}
+    } catch (error) {
+      console.log('[ERROR onSearchTaxpayerIdInfo]: ', error);
+    }
   };
 
   return (

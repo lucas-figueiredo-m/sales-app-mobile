@@ -46,6 +46,7 @@ export const NewClientAddress: React.FC = () => {
       'complement',
       'city',
       'state',
+      'number',
     ]);
 
     if (!valid) return;
@@ -79,6 +80,13 @@ export const NewClientAddress: React.FC = () => {
             error={errors?.address?.message}
             name="address"
             placeholder="Endereco"
+          />
+          <Form.Field
+            control={control}
+            rules={{ required: 'Informe o Endereco' }}
+            error={errors?.number?.message}
+            name="number"
+            placeholder="Número"
           />
           <Form.Field
             control={control}

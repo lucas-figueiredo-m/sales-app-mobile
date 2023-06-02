@@ -1,4 +1,8 @@
-import { formatTaxpayerId, validateTaxpayerId } from '@salesapp/utils';
+import {
+  formatTaxpayerId,
+  validateAddressNumber,
+  validateTaxpayerId,
+} from '@salesapp/utils';
 import { z } from 'zod';
 
 export const newClientDefaultForm = {
@@ -12,6 +16,7 @@ export const newClientDefaultForm = {
   zipCode: '',
   neighborhood: '',
   address: '',
+  number: '',
   complement: '',
   city: '',
   state: '',
@@ -36,6 +41,7 @@ export const NewClientSchema = z.object({
   zipCode: z.string().length(9),
   neighborhood: z.string().min(1),
   address: z.string().min(1),
+  number: z.string().refine(validateAddressNumber, 'error.form.addrNumber'),
   complement: z.string(),
   city: z.string().min(1),
   state: z.string().length(2),

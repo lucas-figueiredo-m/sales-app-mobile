@@ -34,6 +34,7 @@ export const useNewClient = () => {
     neighborhood,
     address,
     complement,
+    number,
     city,
     state,
 
@@ -53,6 +54,7 @@ export const useNewClient = () => {
       zipCode,
       neighborhood,
       address,
+      number,
       complement,
       city,
       state,
@@ -70,6 +72,7 @@ export const useNewClient = () => {
       zipCode,
       neighborhood,
       address,
+      number,
       complement,
       city,
       state,

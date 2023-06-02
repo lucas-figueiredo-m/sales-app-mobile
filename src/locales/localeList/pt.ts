@@ -47,6 +47,8 @@ export default {
     form: {
       taxpayerIdLength: 'O CNPJ deve ter exatos 18 caracteres',
       taxpayerIdInvalid: 'O CNPJ informado é inválido',
+      addrNumber: 'Insira um númeoro ou S/N para sem número',
+      clientAlreadyExists: 'O CNPJ inserido já existe na base de dados',
     },
   },
   modal: {

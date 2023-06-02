@@ -5,3 +5,4 @@ export * from './number';
 export * from './validateTaxpayerId';
 export * from './formatters';
 export * from './constants';
+export * from './validateAddressNumber';

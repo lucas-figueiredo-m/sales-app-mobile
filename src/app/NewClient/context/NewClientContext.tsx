@@ -28,7 +28,7 @@ type NewClientContextType = {
   handleSubmit?: UseFormHandleSubmit<NewClientSchemaType>;
   errors?: FieldErrors<NewClientSchemaType>;
   getValues?: UseFormGetValues<NewClientSchemaType>;
-  registerNewClient: any;
+  registerNewClient: (callback: () => void) => void;
 };
 
 export const NewClientContext = createContext<NewClientContextType>({
@@ -46,8 +46,15 @@ export const NewClientContextContainer: React.FC<
 > = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
-  const { control, trigger, handleSubmit, setValue, getValues, errors } =
-    useNewClient();
+  const {
+    control,
+    trigger,
+    handleSubmit,
+    setValue,
+    getValues,
+    errors,
+    setError,
+  } = useNewClient();
 
   const fillFormFromTaxpayerIdData = useCallback(
     (data: ConsultTaxpayerIdData) => {
@@ -83,6 +90,7 @@ export const NewClientContextContainer: React.FC<
           estabelecimento.logradouro
         ).toCapitalize(),
       );
+      setValue('number', estabelecimento.numero);
       setValue('complement', complement);
       setValue('city', estabelecimento.cidade.nome.toCapitalize());
       setValue('state', estabelecimento.estado.sigla);
@@ -108,38 +116,52 @@ export const NewClientContextContainer: React.FC<
 
       const taxpayerId = getValues('taxpayerId').numericStringOnly();
 
+      const client = await ClientService.findByTaxpayerId(taxpayerId);
+
+      if (client) {
+        setError('taxpayerId', {
+          message: 'error.form.clientAlreadyExists',
+          type: 'validate',
+        });
+
+        throw new Error('Taxpayer ID already exists');
+      }
+
       const data = await ExternalServices.findTaxpayerIdData(taxpayerId);
       fillFormFromTaxpayerIdData(data);
     } catch (error) {
-      console.log('Error: ', error);
+      throw error;
     } finally {
       setLoading(false);
     }
-  }, [fillFormFromTaxpayerIdData, getValues, trigger]);
+  }, [fillFormFromTaxpayerIdData, getValues, trigger, setError]);
 
-  const registerNewClient = handleSubmit(
-    async data => {
-      console.log('Testing 2');
-      await ClientService.create({
-        address: data.address,
-        phone: data.phone.toInsertableData(),
-        company_name: data.companyName,
-        trade_name: data.tradeName,
-        taxpayer_id: data.taxpayerId.toInsertableData(),
-        complement: data.complement,
-        buyer_first_name: data.buyerFirstName,
-        buyer_last_name: data.buyerLastName,
-        zip_code: data.zipCode.toInsertableData(),
-        employee_id: 1,
-        active: true,
-        type: data.companyType,
-        number: '1234',
-      });
-      console.log('Testing 3');
-    },
-    error => {
-      console.log('[Error saving user]: ', error);
-    },
+  const registerNewClient = useCallback(
+    (callback: () => void) =>
+      handleSubmit(
+        async data => {
+          await ClientService.create({
+            address: data.address,
+            phone: data.phone.numericStringOnly(),
+            company_name: data.companyName,
+            trade_name: data.tradeName,
+            taxpayer_id: data.taxpayerId.numericStringOnly(),
+            complement: data.complement,
+            buyer_first_name: data.buyerFirstName,
+            buyer_last_name: data.buyerLastName,
+            zip_code: data.zipCode.numericStringOnly(),
+            employee_id: 1,
+            active: true,
+            type: data.companyType,
+            number: data.number,
+          });
+          callback();
+        },
+        error => {
+          console.log('[Error saving user]: ', error);
+        },
+      )(),
+    [handleSubmit],
   );
 
   const context: Required<NewClientContextType> = useMemo(

@@ -2,6 +2,7 @@ import { ClientModel, database } from '@salesapp/database';
 import type { Client, ClientWithoutId } from '@salesapp/types';
 import { Tables } from '@salesapp/types';
 import { ClientAbstract } from './Client.abstract';
+import { Q } from '@nozbe/watermelondb';
 
 class ClientClass implements ClientAbstract {
   async list(): Promise<Client[]> {
@@ -55,6 +56,20 @@ class ClientClass implements ClientAbstract {
     };
     return formattedEntry;
   }
+  async findByTaxpayerId(taxpayerId: string): Promise<Client | null> {
+    const entry = await database
+      .get<ClientModel>(Tables.Client)
+      .query(Q.where('taxpayer_id', taxpayerId))
+      .fetch();
+
+    console.log('taxpayerId: ', taxpayerId);
+    console.log('entry: ', entry);
+
+    if (entry.length === 0) return null;
+
+    return entry[0];
+  }
+
   async create(client: ClientWithoutId): Promise<Client> {
     const entry: Client = await database.write(async () => {
       const newUser: ClientModel = await database
